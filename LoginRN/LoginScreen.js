@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
 import {View, Text, Button, StyleSheet, TextInput} from 'react-native';
 import { useNavigation }from '@react-navigation/native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const LoginScreen = () => {
     const navigation = useNavigation();
-    const [email, setEmail] = useState('');
+    const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
 
     const handleLogin = async () => {
@@ -21,7 +22,7 @@ const LoginScreen = () => {
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({
-                    username: email,
+                    username: username,
                     password: password
                 })
             });
@@ -30,6 +31,7 @@ const LoginScreen = () => {
                 // const data = await response.json();
                 // console.log(data);
                 console.log('Passou');
+                await AsyncStorage.setItem('username', username);
                 navigation.navigate('Home');
             } else {
                 console.log('Something went wrong');
@@ -44,9 +46,9 @@ const LoginScreen = () => {
       <Text>Login</Text>
         <TextInput
         style={styles.input}
-          placeholder="Email"
-          onChangeText={text => setEmail(text)}
-            value={email}
+          placeholder="User Name"
+          onChangeText={text => setUsername(text)}
+            value={username}
         />
         <TextInput
             style={styles.input}          
